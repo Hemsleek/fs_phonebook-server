@@ -1,0 +1,34 @@
+{
+  "name": "fs_phonebook-server",
+  "version": "1.0.0",
+  "description": "phonebook server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "dev": "nodemon index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hemsleek/fs_phonebook-server.git"
+  },
+  "keywords": [
+    "name",
+    "number",
+    "filter",
+    "contact",
+    "javascript"
+  ],
+  "author": "Asiyanbi Mubashir <asiyanbimubashir@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hemsleek/fs_phonebook-server/issues"
+  },
+  "homepage": "https://github.com/Hemsleek/fs_phonebook-server#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
