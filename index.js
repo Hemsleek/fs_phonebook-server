@@ -1,12 +1,19 @@
 const express = require('express')
 const app = express()
 
+app.use(express.json())
+app.disable('x-powered-by')
+
+
 let persons = [
     { name: 'Arto Hellas', number: '040-123456', id:1 },
     { name: 'Ada Lovelace', number: '39-44-5323523', id:2 },
     { name: 'Dan Abramov', number: '12-43-234345', id:3 },
     { name: 'Mary Poppendieck', number: '39-23-6423122', id:4 }
   ] 
+
+  const generateId = () => persons.length>0? Math.max(...persons.map(person => person.id)) + 1 :1
+
 
 app.get('/' , (req, res) => {
     res.json({ message:"we are here 😎🔥" })
@@ -25,10 +32,17 @@ app.get('/info', (req, res) => {
 
 app.get('/api/persons/:id', (req, res) => {
     const { id } = req.params
-     persons = persons.filter(person => person.id === parseInt(id))
+     person = persons.filter(person => person.id === parseInt(id))
     if(!person.length) return res.send(`person with id: ${id} not found`)
-    res.json(persons)
+    res.json(person)
 
+})
+
+app.post('/api/persons', (req, res) =>{
+    let newContact = req.body
+    newContent.id = generateId()
+    persons = persons.concat(newContact)
+    res.json(newContact)
 })
 
 app.delete('/api/persons/:id', (req, res) => {
