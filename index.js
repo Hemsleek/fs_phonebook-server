@@ -42,8 +42,8 @@ app.post('/api/persons', (req, res) =>{
     let newContact = req.body
     if(!newContact.name || !newContact.number) return res.status(400).send(`name / number not supplied`)
     const personExist = persons.some(person => person.name===newContact.name)
-    if(personExist) return res.status(400).send(`${newContact.name} already exist`)
-    newContent.id = generateId()
+    if(personExist) return res.status(400).send(`${newContact.name} already exist,name must be unique`)
+    newContact.id = generateId()
     persons = persons.concat(newContact)
     res.json(newContact)
 })
