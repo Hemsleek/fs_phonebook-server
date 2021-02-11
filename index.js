@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const morgan = require('morgan')
 const cors = require('cors')
+require('dotenv').config()
 
 app.use(express.json())
 app.disable('x-powered-by')
@@ -60,7 +61,7 @@ app.delete('/api/persons/:id', (req, res) => {
     res.status(204).end()
 })
 
-const PORT = 3030
+const PORT = process.env.PORT || 3031
 
 app.listen(PORT ,() => { 
     console.log(`server is running on port ${PORT}`)
