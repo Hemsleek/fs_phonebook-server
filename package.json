@@ -8,7 +8,7 @@
     "dev": "nodemon index",
     "build:ui":"rm -rf build && cd ../fs_open_ex/part2/phonebook && yarn build && cp -r build ../../../fs_phonebook-server",
     "deploy:heroku": "git push heroku HEAD:master",
-    "deploy:full": "yarn build:ui && git add . && git commit -m uibuild && ggpush && yarn deploy:heroku",
+    "deploy:full": "yarn build:ui && git add . && git commit -m uibuild && git push && yarn deploy:heroku",
     "logs:prod":"heroku logs --tail",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
