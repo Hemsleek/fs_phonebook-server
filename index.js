@@ -5,6 +5,7 @@ const cors = require('cors')
 require('dotenv').config()
 
 app.use(express.json())
+app.use(express.static('build'))
 app.disable('x-powered-by')
 app.use(cors())
 morgan.token('body' , (req,res)=> JSON.stringify(req.body))
