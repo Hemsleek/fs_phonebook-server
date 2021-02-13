@@ -54,7 +54,7 @@ app.post('/api/persons', (req, res) =>{
     newContact.id = generateId()
     persons = persons.concat(newContact)
     res.json(newContact)
-})
+}) 
 
 app.delete('/api/persons/:id', (req, res) => {
     const { id } = req.params
