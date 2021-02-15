@@ -27,18 +27,21 @@ app.get('/api/persons', (req, res) => {
 
   })
 
-app.get('/info', (req, res) => {
-    res.send(`<p>Phonebook has info for ${persons.length} people</p>
+app.get('/info', (req, res,next) => {
+    Person.countDocuments({}).then((count) =>{
+        res.send(`<p>Phonebook has info for ${count} people</p>
         <p>${new Date()}</p>
-    `)
+        `)}).catch(err => next(err))
 
 })
 
-app.get('/api/persons/:id', (req, res) => {
+app.get('/api/persons/:id', (req, res,next) => {
     const { id } = req.params
-     person = persons.filter(person => person.id === parseInt(id))
-    if(!person.length) return res.send(`person with id: ${id} not found`)
-    res.json(person)
+    Person.findById(id).then(contact => {
+        if(contact) return res.json(contact)
+        else return res.status(404).end()
+    }).catch(err =>  next(err))
+   
 
 })
 
@@ -48,15 +51,37 @@ app.post('/api/persons', (req, res) =>{
     // const personExist = persons.some(person => person.name===newContact.name)
     // if(personExist) return res.status(400).send(`${newContact.name} already exist,name must be unique`)
     new Person(newContact).save().then(response => {res.json(response)})
-    .catch(err => { console.log(err) })
+    .catch(err => { res.status(500).end() })
 
 }) 
 
+app.put('/api/persons/:id', (req, res, next) => {
+
+    const {id} = req.params
+    const  personUpdate = req.body.number
+    Person.findByIdAndUpdate(id,{number: personUpdate},{new:true}).then( updatedPerson => res.json(updatedPerson)).catch(err => next(err))
+    
+})
+
 app.delete('/api/persons/:id', (req, res) => {
     const { id } = req.params
-    persons = persons.filter(person => person.id !== parseInt(id))
-    res.status(204).end()
+    
+    Person.findByIdAndRemove(id).then(response => res.status(204).end())
+    .catch(err =>  next(err))
 })
+
+
+const errorHandler = (err, req, res, next) => {
+    console.log(err.message)
+    
+    if (err.name === 'CastError') {
+        return res.status(400).send({ error: 'malformatted id' })
+      }
+    
+      next(err)
+}
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3031
 
