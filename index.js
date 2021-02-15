@@ -45,13 +45,11 @@ app.get('/api/persons/:id', (req, res,next) => {
 
 })
 
-app.post('/api/persons', (req, res) =>{
+app.post('/api/persons', (req, res,next) =>{
     let newContact = req.body
     if(!newContact.name || !newContact.number) return res.status(400).send(`name / number not supplied`)
-    // const personExist = persons.some(person => person.name===newContact.name)
-    // if(personExist) return res.status(400).send(`${newContact.name} already exist,name must be unique`)
     new Person(newContact).save().then(response => {res.json(response)})
-    .catch(err => { res.status(500).end() })
+    .catch(err => next(err))
 
 }) 
 
@@ -76,6 +74,9 @@ const errorHandler = (err, req, res, next) => {
     
     if (err.name === 'CastError') {
         return res.status(400).send({ error: 'malformatted id' })
+    }
+    else if (err.name === 'ValidationError') {
+        return res.status(400).json({ error: err.message })
       }
     
       next(err)
